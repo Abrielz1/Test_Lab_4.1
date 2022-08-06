@@ -1,3 +1,5 @@
+package SomeMangers;
+
 public class Managers {
 
     private static InMemoryHistoryManager InMemoryHistoryManager = new InMemoryHistoryManager();

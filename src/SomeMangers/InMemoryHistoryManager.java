@@ -1,3 +1,7 @@
+package SomeMangers;
+
+import Constructors.Task;
+
 import java.util.ArrayList;
 
 public class InMemoryHistoryManager implements HistoryManager {
