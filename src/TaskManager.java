@@ -27,19 +27,19 @@ public interface TaskManager {
 
     ArrayList<Task> getTaskValues();
 
-    void add(Task task, TaskStatus taskStatus);
+    void add(Task task);
 
-    void addEpicTask(Epic epic, TaskStatus taskStatus);
+    void addEpicTask(Epic epic);
 
-    void addSubEpicTask(SubTask subtask, TaskStatus taskStatus);
+    void addSubEpicTask(SubTask subtask);
 
-    void update(Task task, TaskStatus taskStatus);
+    void update(Task task);
 
-    void updateEpic(Epic epic, TaskStatus taskStatus);
+    void updateEpic(Epic epic);
 
-   void johnTheRipper(Epic epic, TaskStatus taskStatus);
+   void johnTheRipper(Epic epic);
 
-    void updateSubEpic(SubTask subtask, TaskStatus taskStatus);
+    void updateSubEpic(SubTask subtask);
 
     ArrayList<SubTask> getAllSubtasksFromEpic(int id);
 
@@ -47,13 +47,19 @@ public interface TaskManager {
 
     void removeEpic(int id);
 
-    void removeSubTask(int id, SubTask subtask, TaskStatus taskStatus);
+    void removeSubTask(int id, SubTask subtask);
 
     void purgeTask();
 
     void purgeEpic();
 
     void purgeAllTask();
+
+    Task getTask(int id);
+
+    SubTask getSubTask(int id);
+
+    Epic getEpic(int id);
 
     String toString();
 

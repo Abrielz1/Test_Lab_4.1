@@ -5,9 +5,7 @@ public class InMemoryTaskManager implements  TaskManager { //сюда копир
 
 //todo Просмотром будем считаться вызов у менеджера методов получения задачи по идентификатору — getTask(), getSubtask() и getEpic().
 // От повторных просмотров избавляться не нужно.
-// public Task getHistory(){
-//    return task;
-// }
+
 private int id = 0;
 
     private HashMap<Integer, Epic> epicHash = new HashMap<Integer, Epic>();
@@ -51,64 +49,63 @@ private int id = 0;
     }
 
     @Override
-    public void add(Task task, TaskStatus taskStatus) {
+    public void add(Task task) {
         task.setId(id++);
         taskArray.put(task.getId(), task);
     }
 
     @Override
-    public void addEpicTask(Epic epic, TaskStatus taskStatus) {
+    public void addEpicTask(Epic epic) {
         epic.setId(id++);
         epicHash.put(epic.getId(), epic);
     }
 
-
     @Override
-    public void addSubEpicTask(SubTask subtask, TaskStatus taskStatus) {
+    public void addSubEpicTask(SubTask subtask) {
         subtask.setId(id++);
         subEpicHash.put(subtask.getId(), subtask);
-        johnTheRipper(getEpicById(subtask.getEpicId()), taskStatus);
+        johnTheRipper(getEpicById(subtask.getEpicId()));
     }
 
     @Override
-    public void updateSubEpic(SubTask subtask, TaskStatus taskStatus) {
+    public void updateSubEpic(SubTask subtask) {
         subEpicHash.put(subtask.getId(), subtask);
-        johnTheRipper(getEpicById(subtask.getEpicId()), taskStatus);
+        johnTheRipper(getEpicById(subtask.getEpicId()));
     }
 
     @Override
-    public void removeSubTask(int id, SubTask subtask, TaskStatus taskStatus) {
+    public void removeSubTask(int id, SubTask subtask) {
         int Ids = subEpicHash.get(id).getEpicId();
         epicHash.get(Ids).getSubtaskId().remove(id);
-        johnTheRipper(getEpicById(subtask.getEpicId()), taskStatus);
+        johnTheRipper(getEpicById(subtask.getEpicId()));
         subEpicHash.remove(id);
     }
 
     @Override
-    public void johnTheRipper(Epic epic, TaskStatus taskStatus) {
-        epic.setStatus(taskStatus.NEW);
+    public void johnTheRipper(Epic epic) {
+        epic.setStatus(TaskStatus.NEW);
         ArrayList<Integer> subTaskId = epic.getSubtaskId();
         for (int id : subTaskId) {
-            if (subEpicHash.get(id).getStatus().equals(taskStatus.DONE)) {
-                epic.setStatus(taskStatus.DONE);
+            if (subEpicHash.get(id).getStatus().equals(TaskStatus.DONE)) {
+                epic.setStatus(TaskStatus.DONE);
                 break;
-            } else if (subEpicHash.get(id).getStatus().equals(taskStatus.IN_PROGRESS)) {
-                epic.setStatus(taskStatus.IN_PROGRESS);
+            } else if (subEpicHash.get(id).getStatus().equals(TaskStatus.IN_PROGRESS)) {
+                epic.setStatus(TaskStatus.IN_PROGRESS);
                 return;
-            } else if (epic.getStatus().equals(taskStatus.DONE) && taskArray.get(id).getStatus().equals(taskStatus.NEW)) {
-                epic.setStatus(taskStatus.IN_PROGRESS);
+            } else if (epic.getStatus().equals(TaskStatus.DONE) && taskArray.get(id).getStatus().equals(TaskStatus.NEW)) {
+                epic.setStatus(TaskStatus.IN_PROGRESS);
                 return;
             }
         }
     }
 
     @Override
-    public void update(Task task, TaskStatus taskStatus) {
+    public void update(Task task) {
         taskArray.put(task.getId(), task);
     }
 
     @Override
-    public void updateEpic(Epic epic, TaskStatus taskStatus) {
+    public void updateEpic(Epic epic) {
         epicHash.put(epic.getId(), epic);
     }
 
@@ -150,6 +147,24 @@ private int id = 0;
     public void purgeAllTask() {
         epicHash.clear();
         subEpicHash.clear();
+    }
+
+    @Override
+    public Task getTask(int id) {
+        Managers.getDefaultHistory().add(taskArray.get(id));
+        return taskArray.get(id);
+    }
+
+    @Override
+    public Epic getEpic(int id) {
+        Managers.getDefaultTask().add(epicHash.get(id));
+        return epicHash.get(id);
+    }
+
+    @Override
+    public SubTask getSubTask(int id) {
+        Managers.getDefaultTask().add(subEpicHash.get(id));
+        return subEpicHash.get(id);
     }
 
     @Override
