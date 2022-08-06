@@ -67,23 +67,24 @@ private int id = 0;
     public void addSubEpicTask(SubTask subtask, TaskStatus taskStatus) {
         subtask.setId(id++);
         subEpicHash.put(subtask.getId(), subtask);
-        //johnTheRipper(getEpicById(subtask.getEpicId()));
+        johnTheRipper();
     }
 
     @Override
     public void updateSubEpic(SubTask subtask, TaskStatus taskStatus) {
         subEpicHash.put(subtask.getId(), subtask);
-        // johnTheRipper(getEpicById(subtask.getEpicId()));
+         johnTheRipper(getEpicById(subtask.getEpicId()));
     }
 
     @Override
     public void removeSubTask(int id, SubTask subtask, TaskStatus taskStatus) {
         int Ids = subEpicHash.get(id).getEpicId();
         epicHash.get(Ids).getSubtaskId().remove(id);
-        //  johnTheRipper(getEpicById(subtask.getEpicId()));
+         johnTheRipper(getEpicById(subtask.getEpicId()));
         johnTheRipper();
         subEpicHash.remove(id);
     }
+
 
     @Override
     public void johnTheRipper(Epic epic, TaskStatus taskStatus) {
