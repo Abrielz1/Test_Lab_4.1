@@ -67,24 +67,22 @@ private int id = 0;
     public void addSubEpicTask(SubTask subtask, TaskStatus taskStatus) {
         subtask.setId(id++);
         subEpicHash.put(subtask.getId(), subtask);
-        johnTheRipper();
+        johnTheRipper(getEpicById(subtask.getEpicId()), taskStatus);
     }
 
     @Override
     public void updateSubEpic(SubTask subtask, TaskStatus taskStatus) {
         subEpicHash.put(subtask.getId(), subtask);
-         johnTheRipper(getEpicById(subtask.getEpicId()));
+        johnTheRipper(getEpicById(subtask.getEpicId()), taskStatus);
     }
 
     @Override
     public void removeSubTask(int id, SubTask subtask, TaskStatus taskStatus) {
         int Ids = subEpicHash.get(id).getEpicId();
         epicHash.get(Ids).getSubtaskId().remove(id);
-         johnTheRipper(getEpicById(subtask.getEpicId()));
-        johnTheRipper();
+        johnTheRipper(getEpicById(subtask.getEpicId()), taskStatus);
         subEpicHash.remove(id);
     }
-
 
     @Override
     public void johnTheRipper(Epic epic, TaskStatus taskStatus) {
@@ -113,24 +111,6 @@ private int id = 0;
     public void updateEpic(Epic epic, TaskStatus taskStatus) {
         epicHash.put(epic.getId(), epic);
     }
-
-
-   /*  public void johnTheRipper(Epic epic, TaskStatus taskStatus){
-        epic.setStatus(taskStatus.NEW);
-        ArrayList<Integer> subTaskId = epic.getSubtaskId();
-        for (int id : subTaskId) {
-            if (subEpicHash.get(id).getStatus().equals("DONE")) {
-                epic.setStatus("DONE");
-                break;
-            } else if (subEpicHash.get(id).getStatus().equals("IN_PROGRESS")) {
-                epic.setStatus("IN_PROGRESS");
-                return;
-            } else if (epic.getStatus().equals("DONE") && taskArray.get(id).getStatus().equals("NEW")) {
-                epic.setStatus("IN_PROGRESS");
-                return;
-            }
-        }
-    } */
 
     @Override
     public ArrayList<SubTask> getAllSubtasksFromEpic(int id) {
